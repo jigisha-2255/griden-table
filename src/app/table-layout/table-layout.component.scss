@@ -142,3 +142,35 @@ ngb-panel {
     color: red;
     background-color: orange;
 }
+
+.table .action-icon{
+    color:#98a6ad;
+    font-size:1.2rem;
+    display:inline-block;
+    padding:0 3px
+}
+table{
+    padding:0px;
+}
+.childList{
+    background:#fff;
+    ul{
+        padding:0;
+        margin:0;
+    }
+    li{
+        border-bottom: 1px solid #efefef;
+
+    }
+    li:last-child {
+        border-bottom: none;
+    }
+} 
+.columnWidth{
+    width:15%;
+}
+@media(max-width:900px){
+    .columnWidth{
+        width:30%;
+    }
+}

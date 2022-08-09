@@ -1,24 +1,44 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
-import { UsersResponse } from '../model/users.model';
+import { Users, UsersResponse } from '../model/Users.model';
+import { TableLayoutService } from '../table-layout/table-layout.service';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
+  providers:[TableLayoutService,DecimalPipe]
 })
 export class UsersComponent implements OnInit {
-  constructor(private service:HttpService){
+  constructor(private layoutService:TableLayoutService,private service:HttpService){
 
   }
-  gridData!: Object;
+  data:Users[]=[];
+  gridData:Users[]=[];
   total!:number;
   ColData=[
-    {field:'id',header:'id'},
-    {field:'first_name',header:'Users'},
+    // {field:'id',header:'id'},
+    {field:'status',header:'',width:'2%'},
+    {field:'first_name',header:'Users',width:'15%'},
+    {field:'email',header:'Email',width:'15%'},
+    {field:'user_type',header:'User Type',width:'15%'},
+  ]
+  childData=[
     {field:'email',header:'Email'},
     {field:'user_type',header:'User Type'},
-    {field:'',header:'Action'}
+  ]
+  button=[
+    {
+      title:'Edit',
+      icon: 'mdi mdi-square-edit-outline',
+      routerLink:''
+    },
+    {
+      title:'Delete',
+      icon:'mdi mdi-delete',
+      routerLink:''
+    }
   ]
 
   ngOnInit(){
@@ -33,6 +53,7 @@ export class UsersComponent implements OnInit {
         this.total=res.result.length;
         console.log('Get Data', this.gridData);
         console.log(res.result.length);
+        this.layoutService.initWalletTable();
       },
       error: (err) => {
         console.log(err.message);

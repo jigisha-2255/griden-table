@@ -11,6 +11,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptorService } from './token-interceptor.service';
 import { UsersComponent } from './users/users.component';
 import { WalletComponent } from './wallet/wallet.component';
+import { StyleCellDirective } from './table-layout/style-cell.directive';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { WalletComponent } from './wallet/wallet.component';
     TableLayoutComponent,
     NgbdSortableTableLayout,
     UsersComponent,
-    WalletComponent
+    WalletComponent,
+    StyleCellDirective,
+    TestComponent
   ],
   imports: [
     BrowserModule,

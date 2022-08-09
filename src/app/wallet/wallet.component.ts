@@ -9,26 +9,49 @@ import { WalletResponse } from '../model/Wallet.model';
 })
 export class WalletComponent implements OnInit {
   constructor(private service:HttpService){
-
+    // this.data$ = TableLayoutService.data$;
+    // this.total$ = TableLayoutService.total$;
   }
   gridData!: Object;
   total!: number;
   ColData=[
-    {field:'id',header:'id'},
-    {field:'user.first_name',header:'Users'},
+    // {field:'id',header:'id'},
+    {field:'status',header:'',width:'2%'},
+    {field:'user.first_name',header:'Users',width:'20%'},
+    {field:'wallet_id',header:'Wallet ID',width:'15%'},
+    {field:'type',header:'Transaction Type',width:'15%'},
+    {field:'amount',header:'Amount',width:'10%'},
+    {field:'updated_balance',header:'Balance',width:'10%'},
+    {field:'debit_or_credit',header:'Debit/Credit',width:'10%'},
+    {field:'transaction_datetime',header:'Transaction Date',width:'20%'},
+    {field:'transaction_status',header:'Status',width:'15%'},
+  ]
+  childData=[
     {field:'wallet_id',header:'Wallet ID'},
     {field:'type',header:'Transaction Type'},
     {field:'amount',header:'Amount'},
     {field:'updated_balance',header:'Balance'},
     {field:'debit_or_credit',header:'Debit/Credit'},
     {field:'transaction_datetime',header:'Transaction Date'},
-    {field:'status',header:'Status'},
+    // {field:'',header:'Action'}
   ]
-
+  action=[
+    {
+      title:'Edit',
+      icon: 'mdi mdi-eye',
+      routerLink:''
+    },
+    {
+      title:'Delete',
+      icon:'mdi mdi-file-pdf',
+      routerLink:''
+    }
+  ]
   ngOnInit(){
     this.loadGrid();
     console.log(this.total);
   }
+
   loadGrid() {
     try {
       this.service

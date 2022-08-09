@@ -38,3 +38,4 @@ export interface State {
   SortTableColumn: SortTableColumn;
   SortTableDirection: SortTableDirection;
 }
+

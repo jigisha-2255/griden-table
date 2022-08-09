@@ -20,59 +20,9 @@
             </div>
         </div>
     </div>
-    <div>
+    <div class="table-responsive">
         <table class="table table-striped table-centered dt-responsive nowrap" id="products-datatable">
             <thead>
-                <tr>
-                    <th style="width:5%;">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="customCheck1" name="all"
-                                [(ngModel)]="selectedAll" (change)="selectAll();" />
-                            <label class="form-check-label" for="customCheck1">&nbsp;</label>
-                        </div>
-                    </th>
-                    <th *ngFor="let key of ColData">
-                        {{key.header}}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let record of GridData; let i = index">
-                    <td style="width:5%;">
-                        <div class="d-flex align-items-center">
-                            <button type="button" class="btn btn-collapse me-2"
-                                (click)="isCollapsed[i] = !isCollapsed[i]" [attr.aria-expanded]="!isCollapsed"
-                                aria-controls="collapse">
-                                <i
-                                    [ngClass]="isCollapsed[i]==true?'uil-minus-circle text-danger':'uil-plus-circle text-success'"></i>
-                            </button>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="all"
-                                    [(ngModel)]="record.checked" (change)="checkIfAllSelected();">
-                                <label class="form-check-label" for="customCheck1">&nbsp;</label>
-                            </div>
-                        </div>
-                    </td>
-                    <td *ngFor="let key of ColData; let i = index">           
-                        <span>{{record[key.field]}}</span>
-                    </td>
-                    <div class="childList">
-                        <td *ngFor="let key of ColData; let i = index" #collapse="ngbCollapse" [(ngbCollapse)]="!isCollapsed[i]" colspan="4">
-                            <ul>
-                                <li class="d-flex row d-lg-none">
-                                    <div class="col-6">
-                                        <h6>Wallet ID</h6>
-                                    </div>
-                                    <div class="col-6 my-auto">
-                                        <ngb-highlight></ngb-highlight>
-                                    </div>
-                                </li>
-                            </ul>
-                        </td>
-                    </div>
-                </tr>
-            </tbody>
-            <!-- <thead class="table-light">
                 <tr>
                     <div class="d-lg-flex flex-lg-row">
                         <th style="width:5%;">
@@ -82,33 +32,27 @@
                                 <label class="form-check-label" for="customCheck1">&nbsp;</label>
                             </div>
                         </th>
-                        <th scope="col" style="width:3%;">
+                        <th *ngFor="let key of ColData" width="{{key.width}}">
+                            {{key.header}}
                         </th>
-                        <th scope="col" style="width:25%;" usersSortable="first_name"
-                            (sortUsers)="onWalletSort($event)">
-                            Users
-                        </th>
-                        <th scope="col" style="width:15%;" class="d-none d-lg-block" usersSortable="contact_number"
-                            (sortUsers)="onWalletSort($event)">Phone
-                        </th>
-                        <th scope="col" style="width:30%;" class="d-none d-lg-block" usersSortable="email"
-                            (sortUsers)="onWalletSort($event)">
-                            Email
-                        </th>
-                        <th scope="col" style="width:15%;" class="d-none d-lg-block" usersSortable="user_type"
-                            (sortUsers)="onWalletSort($event)">User Type
-                        </th>
-                        <th scope="col" style="width:5%;" class="d-none d-lg-block">Action
-                        </th>
+                        <!-- <th>
+                            Action
+                        </th> -->
                     </div>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let field of TableLayoutService.data$ | async; let i = index">
+                <!-- <tr *ngFor="let field of TableLayoutService.data$ | async; let i = index">
+                    <td style="width:15%;" class="d-none d-lg-block">
+                        <ngb-highlight [result]="field.id">
+                        </ngb-highlight>
+                    </td>
+                </tr> -->
+                <tr *ngFor="let record of propertyList; let i = index">
                     <div class="d-lg-flex flex-lg-row parentList">
                         <td style="width:5%;">
                             <div class="d-flex align-items-center">
-                                <button type="button" class="btn d-lg-none btn-collapse me-2"
+                                <button type="button" class="btn btn-collapse me-2"
                                     (click)="isCollapsed[i] = !isCollapsed[i]" [attr.aria-expanded]="!isCollapsed"
                                     aria-controls="collapse">
                                     <i
@@ -116,93 +60,44 @@
                                 </button>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" name="all"
-                                        [(ngModel)]="field.checked" (change)="checkIfAllSelected();">
+                                        [(ngModel)]="record.checked" (change)="checkIfAllSelected();">
                                     <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                 </div>
                             </div>
                         </td>
-                        <td style="width:3%;">
-                            <div class="d-flex align-items-center my-auto"
-                                [ngClass]="field.status===1 ? 'activeStatus' : 'inactiveStatus'">
-                            </div>
+                        <td class="my-auto" *ngFor="let key of ColData; let i = index" width="{{key.width}}">           
+                            <ngb-highlight [result]="record[key.field]"  [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight>
                         </td>
-                        <td style="width:25%;">
-                            <div class="d-flex align-items-center my-auto">
-                                <ngb-highlight [result]="field.first_name + ' ' + field.last_name"
-                                    [term]="TableLayoutService.searchTerm">
-                                </ngb-highlight>
-                            </div>
-                        </td>
-                        <td style="width:15%;" class="d-none d-lg-block">
-                            <ngb-highlight [result]="field.contact_number" [term]="TableLayoutService.searchTerm">
-                            </ngb-highlight>
-                        </td>
-                        <td style="width:30%;" class="d-none d-lg-block">
-                            <ngb-highlight [result]="field.email" [term]="TableLayoutService.searchTerm">
-                            </ngb-highlight>
-                        </td>
-                        <td style="width:15%; vertical-align: middle" class="d-none d-lg-block">
-                            <ngb-highlight [result]="field.user_type" [term]="TableLayoutService.searchTerm">
-                            </ngb-highlight>
-                        </td>
-                        <td style="width:5%; vertical-align: middle" class="d-none d-lg-block">
-                            <a routerLink="./edit-user" class="action-icon"><i
-                                    class="mdi mdi-square-edit-outline"></i></a>
-                            <a class="action-icon"><i class="mdi mdi-delete"></i></a>
+                        <td *ngFor="let btn of button;">
+                            <a routerLink="{{btn.routerLink}}" class="action-icon">
+                                <i class="{{btn.icon}}"></i>
+                            </a>
                         </td>
                     </div>
                     <div class="childList">
-                        <td #collapse="ngbCollapse" [(ngbCollapse)]="!isCollapsed[i]" colspan="4">
+                        <td  #collapse="ngbCollapse" [(ngbCollapse)]="!isCollapsed[i]" colspan="4">
                             <ul>
-                                <li class="d-flex row d-lg-none">
+                                <li class="d-flex row" *ngFor="let key of childData; let i = index">
                                     <div class="col-6">
-                                        <h6>Users</h6>
+                                        <h6>{{key.header}}</h6>
                                     </div>
-                                    <div class="col-6 my-auto">
-                                        <ngb-highlight [result]="field.first_name + ' '+field.last_name">
-                                        </ngb-highlight>
-                                    </div>
-                                </li>
-                                <li class="d-flex row d-lg-none">
-                                    <div class="col-6">
-                                        <h6>Phone</h6>
-                                    </div>
-                                    <div class="col my-auto">
-                                        <ngb-highlight [result]="field.contact_number"></ngb-highlight>
+                                    <div class="col-6 my-auto table-action d-flex">
+                                        <ngb-highlight [result]="record[key.field]"></ngb-highlight>
                                     </div>
                                 </li>
-                                <li class="d-flex row d-lg-none">
-                                    <div class="col">
-                                        <h6>Email</h6>
-                                    </div>
-                                    <div class="col-6 my-auto">
-                                        <ngb-highlight [result]="field.email"></ngb-highlight>
-                                    </div>
-                                </li>
-                                <li class="d-flex row d-lg-none">
-                                    <div class="col-6">
-                                        <h6>User Type</h6>
-                                    </div>
-                                    <div class="col-6 my-auto">
-                                        <ngb-highlight [result]="field.user_type">
-                                        </ngb-highlight>
-                                    </div>
-                                </li>
-                                <li class="d-flex row d-lg-none">
+                                <li class="d-flex row">
                                     <div class="col-6">
                                         <h6>Action</h6>
                                     </div>
-                                    <div class="col-6 my-auto table-action d-flex">
-                                        <a routerLink="./edit-user" class="action-icon"><i
-                                                class="mdi mdi-square-edit-outline"></i></a>
-                                        <a class="action-icon"><i class="mdi mdi-delete"></i></a>
+                                    <div class="col-6 my-auto table-action">
+                                        <a class="action-icon" *ngFor="let icon of action;"><i class="{{icon.icon}}"></i></a>
                                     </div>
                                 </li>
                             </ul>
                         </td>
                     </div>
                 </tr>
-            </tbody> -->
+            </tbody>
         </table>
     </div>
 

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { HttpService } from '../http.service';
 import {tap,debounceTime,switchMap,delay} from 'rxjs';
 import { SortTableColumn, SortTableDirection } from './sortable-table-layout.directive';
-import { SearchResult, State, Users } from '../model/users.model';
+import { SearchResult, State, Users, UsersResponse} from '../model/Users.model';
 
 const compare = (
   v1: string | number | boolean | object,
@@ -45,7 +45,7 @@ export class TableLayoutService {
   gridData: Array<Users> = [];
   _loading$ = new BehaviorSubject<boolean>(true);
   _search$ = new Subject<void>();
-  _data$ = new BehaviorSubject<Object>(this.gridData);
+  _data$ = new BehaviorSubject<Users[]>([]);
   _total$ = new BehaviorSubject<number>(0);
 
   _state: State = {
@@ -57,12 +57,31 @@ export class TableLayoutService {
   };
 
   // Get API integration
- 
 
   constructor(public httpService: HttpService, public pipe: DecimalPipe) {
     console.log("from service",this.gridData);
     this.initWalletTable();
   }
+
+  // users() {
+  //   try {
+  //     this.httpService
+  //       .get<UsersResponse>('users')
+  //       .subscribe({
+  //         next: (res) => {
+  //           this.gridData = res.result;
+  //           console.log('Get Data', this.gridData);
+  //           this.initWalletTable();
+  //         },
+  //         error: (err) => {
+  //           console.log(err.message);
+  //           alert('Error');
+  //         },
+  //       });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
   initWalletTable(){
     this._search$
