@@ -19,8 +19,7 @@ export class TableLayoutComponent implements OnInit {
   @Input() button: any;
   @Input() action:any;
   @Input() childData:any;
-  @Input() propertyList:any;
-  // @Input() data: any;
+  @Input() columnList:any;
 
   active = 1;
   pages: any = [5, 10, 20, 50, 100,200];

@@ -13,16 +13,25 @@ import { UsersComponent } from './users/users.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { StyleCellDirective } from './table-layout/style-cell.directive';
 import { TestComponent } from './test/test.component';
+import { TestTableLayoutComponent } from './test-table-layout/test-table-layout.component';
+import { TestWallet2Component } from './test-wallet2/test-wallet2.component';
+import { NgbdSortableTableTestWallet2 } from './test-wallet2/sortable-test-wallet2.directive';
+import { TestUsers2Component } from './test-users2/test-users2.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     TableLayoutComponent,
     NgbdSortableTableLayout,
+    NgbdSortableTableTestWallet2,
     UsersComponent,
     WalletComponent,
     StyleCellDirective,
-    TestComponent
+    TestComponent,
+    TestTableLayoutComponent,
+    TestWallet2Component,
+    TestUsers2Component
   ],
   imports: [
     BrowserModule,

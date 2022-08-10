@@ -1,35 +1,36 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { TableColumnMapping } from '../sharedEnum';
+import { TableLayoutService } from '../table-layout/table-layout.service';
 
 @Component({
   selector: 'app-test',
   templateUrl: './test.component.html',
-  styleUrls: ['./test.component.scss']
+  styleUrls: ['./test.component.scss'],
+  providers:[TableLayoutService,DecimalPipe]
 })
 export class TestComponent implements OnInit {
   columnList:any[]=[];
   constructor() {
-   
    }
   
    ngOnInit(): void {
-    enum TableColumnMapping{
-      first_name="User",
-      user_type="User Type"
-    }
      const data=[
       {
-        firstName:"Jigisha",
+        first_name:"Jigisha",
         user_type:'A'
       },
       {
-        firstName:"Sachin",
+        first_name:"Sachin",
         user_type:"B",
-        isChecked:true
+        contact_number:34239943294
       }
      ]
-     let propertyList=Object.keys(data[0])
+
+     const propertyList=Object.keys(data[0])
      
      console.log(propertyList);
+     
      propertyList.forEach((element:string)=>{
       if(element in TableColumnMapping){
       this.columnList.push({
@@ -45,7 +46,4 @@ export class TestComponent implements OnInit {
     }
      })
   }
-  
-  
-
 }

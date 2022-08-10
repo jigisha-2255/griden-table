@@ -15,21 +15,22 @@ export interface SortTableEvent {
 }
 
 @Directive({
-  selector: 'th[sortable]',
+  selector: 'th[walletSortable]',
   host: {
     '[class.asc]': 'direction === "asc"',
     '[class.desc]': 'direction === "desc"',
     '(click)': 'rotate()',
   },
 })
-export class NgbdSortableTableWallet {
-  @Input() sortable: SortTableColumn = '';
+export class NgbdSortableTableTestUsers2 {
+  @Input() walletSortable: SortTableColumn = '';
   @Input() direction: SortTableDirection = '';
   @Output() sort = new EventEmitter<SortTableEvent>();
+ 
   // @Input() Data:any;
 
   rotate(): void {
     this.direction = rotate[this.direction];
-    this.sort.emit({column: this.sortable, direction: this.direction });
+    this.sort.emit({column: this.walletSortable, direction: this.direction });
   }
 }

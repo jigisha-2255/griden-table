@@ -1,10 +1,11 @@
-import { DecimalPipe } from '@angular/common';
-import { Injectable, PipeTransform } from '@angular/core';
+import { DecimalPipe } from "@angular/common";
+import { Injectable, PipeTransform } from "@angular/core";
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { HttpService } from '../http.service';
-import {tap,debounceTime,switchMap,delay} from 'rxjs';
-import { SortTableColumn, SortTableDirection } from './sortable-table-layout.directive';
-import { SearchResult, State, Users, UsersResponse} from '../model/Users.model';
+import { tap,debounceTime,switchMap,delay } from 'rxjs';
+import { SearchResult, State, Wallet, WalletResponse } from "../model/Wallet.model";
+import { SortTableColumn, SortTableDirection } from "./sortable-test-wallet2.directive";
+
 
 const compare = (
   v1: string | number | boolean | object,
@@ -12,10 +13,10 @@ const compare = (
 ) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
 function sort(
-  data: Users[],
+  data: Wallet[],
   column: SortTableColumn,
   direction: string
-): Users[] {
+): Wallet[] {
   if (direction === '' || column === '') {
     return data;
   } else {
@@ -26,26 +27,23 @@ function sort(
   }
 }
 
-function matches(data: Users , term: string, pipe: PipeTransform) {
+function matches(data: Wallet , term: string, pipe: PipeTransform) {
   return (
-    // data.first_name.toLowerCase().includes(term.toLowerCase()) ||
-    // data.last_name.toLowerCase().includes(term.toLowerCase()) ||
-    data.id.toString().includes(term) ||
-    // data.email.toString().includes(term) ||
-    data.contact_number.toString().includes(term) ||
-    data.user_type.toLowerCase().includes(term.toLowerCase()) 
+    data.wallet_id.toString().includes(term) ||
+    data.amount.toString().includes(term) ||
+    data.updated_balance.toString().includes(term) ||
+    data.transaction_datetime.toString().includes(term) 
   );
 }
-
-
 @Injectable({
   providedIn: 'root'
 })
-export class TableLayoutService {
-  gridData: Array<Users> = [];
+export class TestTableLayoutService {
+  gridData: Array<Wallet> = [];
+  // _gridData$ = new BehaviorSubject<Wallet[]>([]);
   _loading$ = new BehaviorSubject<boolean>(true);
   _search$ = new Subject<void>();
-  _data$ = new BehaviorSubject<Users[]>([]);
+  _data$ = new BehaviorSubject<Wallet[]>([]);
   _total$ = new BehaviorSubject<number>(0);
 
   _state: State = {
@@ -59,14 +57,27 @@ export class TableLayoutService {
   // Get API integration
 
   constructor(public httpService: HttpService, public pipe: DecimalPipe) {
-    console.log("from service",this.gridData);
-    this.initWalletTable();
+    // this.httpService
+    //       .get<WalletResponse>('wallet/transaction')
+    //       .subscribe({
+    //         next: (res) => {
+    //           this.gridData = res.result;
+    //           console.log('Get Data', this.gridData);
+    //           this.initWalletTable();
+    //         },
+    //         error: (err) => {
+    //           console.log(err.message);
+    //           alert('Error');
+    //         },
+    //       });
+    // console.log("from service",this.gridData);
+    // this.initWalletTable();
   }
 
-  users() {
+  wallet() {
     try {
       this.httpService
-        .get<UsersResponse>('users')
+        .get<WalletResponse>('wallet/transaction')
         .subscribe({
           next: (res) => {
             this.gridData = res.result;
@@ -100,6 +111,9 @@ export class TableLayoutService {
     this._search$.next();
   }
 
+  // get gridData$() {
+  //   return this._gridData$.asObservable();
+  // }
   get data$() {
     return this._data$.asObservable();
   }

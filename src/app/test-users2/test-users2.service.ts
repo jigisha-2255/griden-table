@@ -1,10 +1,11 @@
 import { DecimalPipe } from '@angular/common';
-import { Injectable, PipeTransform } from '@angular/core';
+import { Injectable, PipeTransform } from "@angular/core";
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { HttpService } from '../http.service';
-import {tap,debounceTime,switchMap,delay} from 'rxjs';
-import { SortTableColumn, SortTableDirection } from './sortable-table-layout.directive';
-import { SearchResult, State, Users, UsersResponse} from '../model/Users.model';
+import { tap,debounceTime,switchMap,delay } from 'rxjs';
+import { SearchResult, State, Users, UsersResponse } from '../model/Users.model';
+import { SortTableColumn, SortTableDirection } from './sortable-test-users2.directive';
+
 
 const compare = (
   v1: string | number | boolean | object,
@@ -26,10 +27,8 @@ function sort(
   }
 }
 
-function matches(data: Users , term: string, pipe: PipeTransform) {
+function matches(data:Users , term: string, pipe: PipeTransform) {
   return (
-    // data.first_name.toLowerCase().includes(term.toLowerCase()) ||
-    // data.last_name.toLowerCase().includes(term.toLowerCase()) ||
     data.id.toString().includes(term) ||
     // data.email.toString().includes(term) ||
     data.contact_number.toString().includes(term) ||
@@ -37,17 +36,16 @@ function matches(data: Users , term: string, pipe: PipeTransform) {
   );
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
-export class TableLayoutService {
-  gridData: Array<Users> = [];
+export class TestUsers2Service {
+  _gridData$ = new BehaviorSubject<Users[]>([]);
   _loading$ = new BehaviorSubject<boolean>(true);
   _search$ = new Subject<void>();
   _data$ = new BehaviorSubject<Users[]>([]);
   _total$ = new BehaviorSubject<number>(0);
-
+  gridData: Array<Users> = [];
   _state: State = {
     page: 1,
     pageSize: 5,
@@ -59,8 +57,8 @@ export class TableLayoutService {
   // Get API integration
 
   constructor(public httpService: HttpService, public pipe: DecimalPipe) {
-    console.log("from service",this.gridData);
-    this.initWalletTable();
+    // console.log("from service",this.gridData);
+    // this.initWalletTable();
   }
 
   users() {
@@ -95,11 +93,15 @@ export class TableLayoutService {
       .subscribe((result) => {
         this._data$.next(result.data);
         this._total$.next(result.total);
+        this._gridData$.next(result.data);
       });
 
     this._search$.next();
   }
 
+  get gridData$() {
+    return this._gridData$.asObservable();
+  }
   get data$() {
     return this._data$.asObservable();
   }

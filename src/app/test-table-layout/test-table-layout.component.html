@@ -3,20 +3,20 @@
         <div class="my-auto">Display</div>
         <div class="my-auto mx-2">
             <select class="form-control form-select" style="width: auto; height:auto;" name="pageSize"
-                [(ngModel)]="TableLayoutService.pageSize">
+                [(ngModel)]="TestTableLayoutService.pageSize">
                 <option *ngFor="let records of pages" [ngValue]="records">
                     {{records}}
                 </option>
             </select>
         </div>
-        <div class="my-auto">Users</div>
+        <div class="my-auto">{{display}}</div>
     </div>
     <div class="col-12 col-lg-6 my-2 my-lg-0">
         <div class="d-flex justify-content-center justify-content-lg-end">
             <label for="table-complete-search" class="col-form-label search-label mx-2">Search:</label>
             <div class="">
                 <input id="table-complete-search" type="text" class="form-control form-control-sm" name="searchTerm"
-                    [(ngModel)]="TableLayoutService.searchTerm">
+                    [(ngModel)]="TestTableLayoutService.searchTerm">
             </div>
         </div>
     </div>
@@ -27,19 +27,22 @@
                     <div class="d-lg-flex flex-lg-row">
                         <th style="width:5%;">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="customCheck1" name="all"
-                                    [(ngModel)]="selectedAll" (change)="selectAll();" />
+                                <input type="checkbox" class="form-check-input" id="customCheck1"
+                                    name="all" [(ngModel)]="selectedAll" (change)="selectAll();" />
                                 <label class="form-check-label" for="customCheck1">&nbsp;</label>
                             </div>
                         </th>
-                        <th *ngFor="let key of ColData" width="{{key.width}}">
-                            {{key.header}}
+                        <th scope="col" *ngFor="let enum of columnList; let i = index" width={{enum.width}} walletSortable=amount (sort)="onSort($event)">
+                            {{enum.title}}
                         </th>
                     </div>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let record of GridData; let i = index">
+                <!-- <tr *ngFor="let record of TestTableLayoutService.data$ | async; let i = index">
+                   test
+                </tr> -->
+                <tr *ngFor="let record of gridData; let i = index">
                     <div class="d-lg-flex flex-lg-row parentList">
                         <td style="width:5%;">
                             <div class="d-flex align-items-center">
@@ -56,21 +59,22 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="my-auto" *ngFor="let key of ColData; let i = index" width="{{key.width}}">           
-                            <ngb-highlight [result]="record[key.field]"  [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight>
+                        <td>
+                        <td class="my-auto" *ngFor="let key of columnList; let i = index" width="{{key.width}}">           
+                            <!-- {{record.first_name}} -->
+                            <!-- <ngb-highlight [result]="{{record[key.field]}}" [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight> -->
+                            <ngb-highlight [result]="record[key.field]" [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight>
                         </td>
-                        <td *ngFor="let btn of button;">
-                            <a routerLink="{{btn.routerLink}}" class="action-icon">
-                                <i class="{{btn.icon}}"></i>
-                            </a>
-                        </td>
+                        <!-- <td>
+                            Action
+                        </td> -->
                     </div>
                     <div class="childList">
                         <td  #collapse="ngbCollapse" [(ngbCollapse)]="!isCollapsed[i]" colspan="4">
                             <ul>
-                                <li class="d-flex row" *ngFor="let key of childData; let i = index">
+                                <li class="d-flex row" *ngFor="let key of childList; let i = index">
                                     <div class="col-6">
-                                        <h6>{{key.header}}</h6>
+                                        <h6>{{key.title}}</h6>
                                     </div>
                                     <div class="col-6 my-auto table-action d-flex">
                                         <ngb-highlight [result]="record[key.field]"></ngb-highlight>
@@ -80,9 +84,9 @@
                                     <div class="col-6">
                                         <h6>Action</h6>
                                     </div>
-                                    <div class="col-6 my-auto table-action">
+                                    <!-- <div class="col-6 my-auto table-action">
                                         <a class="action-icon" *ngFor="let icon of action;"><i class="{{icon.icon}}"></i></a>
-                                    </div>
+                                    </div> -->
                                 </li>
                             </ul>
                         </td>
@@ -91,14 +95,15 @@
             </tbody>
         </table>
     </div>
-
+   
     <div class="d-lg-flex justify-content-lg-between">
         <div class="text-center">
-            <p>Showing Transaction {{TableLayoutService.pageSize}} of {{total}} </p>
+            <p>Showing Transaction {{TestTableLayoutService.pageSize}} of {{(TestTableLayoutService.total$ |
+                async)!}}</p>
         </div>
         <div class="d-flex justify-content-center">
-            <ngb-pagination [collectionSize]="total" [(page)]="TableLayoutService.page"
-                [pageSize]="TableLayoutService.pageSize" [maxSize]="1">
+            <ngb-pagination [collectionSize]="(TestTableLayoutService.total$ | async)!"
+                [(page)]="TestTableLayoutService.page" [pageSize]="TestTableLayoutService.pageSize" [maxSize]="1">
             </ngb-pagination>
         </div>
     </div>

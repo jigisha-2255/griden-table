@@ -1,3 +1,4 @@
+import { SortTableColumn, SortTableDirection } from "../test-wallet2/sortable-test-wallet2.directive";
 
 export interface chargingSession{
     id: number;
@@ -68,7 +69,7 @@ export interface State {
     page: number;
     pageSize: number;
     searchTerm: string;
-    // SortWalletColumn: SortWalletColumn;
-    // SortWalletDirection: SortWalletDirection;
+    SortTableColumn: SortTableColumn;
+    SortTableDirection: SortTableDirection;
 }
   
