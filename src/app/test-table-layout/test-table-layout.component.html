@@ -32,17 +32,81 @@
                                 <label class="form-check-label" for="customCheck1">&nbsp;</label>
                             </div>
                         </th>
-                        <th scope="col" *ngFor="let enum of columnList; let i = index" width={{enum.width}} walletSortable=amount (sort)="onSort($event)">
+                        <th scope="col" *ngFor="let enum of columnList; let i = index" width={{enum.width}} sortTestTable="id" (sort)="onSort($event)" class="d-none d-lg-block">
+                            {{enum.title}}
+                        </th>
+                        <th scope="col" *ngFor="let enum of columnListMob; let i = index" width={{enum.width}} sortTestTable="id" (sort)="onSort($event)" class="d-lg-none">
                             {{enum.title}}
                         </th>
                     </div>
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr *ngFor="let record of TestTableLayoutService.data$ | async; let i = index">
-                   test
-                </tr> -->
-                <tr *ngFor="let record of gridData; let i = index">
+                <tr *ngFor="let record of TestTableLayoutService.gridData2$ | async; let i = index">
+                    <div class="d-lg-flex flex-lg-row parentList">
+                        <td style="width:5%;">
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn btn-collapse me-2"
+                                    (click)="isCollapsed[i] = !isCollapsed[i]" [attr.aria-expanded]="!isCollapsed"
+                                    aria-controls="collapse">
+                                    <i
+                                        [ngClass]="isCollapsed[i]==true?'uil-minus-circle text-danger':'uil-plus-circle text-success'"></i>
+                                </button>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="all"
+                                        [(ngModel)]="record.checked" (change)="checkIfAllSelected();">
+                                    <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                        <td class="my-auto" *ngFor="let key of columnList; let i = index" width="{{key.width}}" class="d-none d-lg-block">           
+                            <!-- {{record.first_name}} -->
+                            {{key.field}}
+                            <!-- <ngb-highlight [result]="{{record[key.field]}}" [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight> -->
+                            <!-- <ngb-highlight [result]="record[key.field]" [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight> -->
+                        </td>
+                        <td class="my-auto" *ngFor="let key of columnListMob; let i = index" width="{{key.width}}" class="d-lg-none">                         
+                            {{key.field}}
+                        </td>
+                        <!-- <td>
+                            Action
+                        </td> -->
+                    </div>
+                    <div class="childList">
+                        <td  #collapse="ngbCollapse" [(ngbCollapse)]="!isCollapsed[i]" colspan="4">
+                            <ul>
+                                <li class="d-flex row" *ngFor="let key of childList; let i = index" class="d-none d-lg-block">
+                                    <div class="col-6">
+                                        <h6>{{key.title}}</h6>
+                                    </div>
+                                    <div class="col-6 my-auto table-action d-flex">
+                                        <!-- <ngb-highlight [result]="record[key.field]"
+                                        [term]="TestTableLayoutService.searchTerm"></ngb-highlight> -->
+                                    </div>
+                                </li>
+                                <li class="d-flex row" *ngFor="let key of childListMob; let i = index" class="d-lg-none">
+                                    <div class="col-6">
+                                        <h6>{{key.title}}</h6>
+                                    </div>
+                                    <div class="col-6 my-auto table-action d-flex">
+                                        <!-- <ngb-highlight [result]="record[key.field]"
+                                        [term]="TestTableLayoutService.searchTerm"></ngb-highlight> -->
+                                    </div>
+                                </li>
+                                <li class="d-flex row">
+                                    <div class="col-6">
+                                        <h6>Action</h6>
+                                    </div>
+                                    <!-- <div class="col-6 my-auto table-action">
+                                        <a class="action-icon" *ngFor="let icon of action;"><i class="{{icon.icon}}"></i></a>
+                                    </div> -->
+                                </li>
+                            </ul>
+                        </td>
+                    </div>
+                 </tr>
+                <!-- <tr *ngFor="let record of gridData; let i = index">
                     <div class="d-lg-flex flex-lg-row parentList">
                         <td style="width:5%;">
                             <div class="d-flex align-items-center">
@@ -61,13 +125,11 @@
                         </td>
                         <td>
                         <td class="my-auto" *ngFor="let key of columnList; let i = index" width="{{key.width}}">           
-                            <!-- {{record.first_name}} -->
-                            <!-- <ngb-highlight [result]="{{record[key.field]}}" [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight> -->
                             <ngb-highlight [result]="record[key.field]" [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight>
                         </td>
-                        <!-- <td>
+                        <td>
                             Action
-                        </td> -->
+                        </td>
                     </div>
                     <div class="childList">
                         <td  #collapse="ngbCollapse" [(ngbCollapse)]="!isCollapsed[i]" colspan="4">
@@ -77,21 +139,22 @@
                                         <h6>{{key.title}}</h6>
                                     </div>
                                     <div class="col-6 my-auto table-action d-flex">
-                                        <ngb-highlight [result]="record[key.field]"></ngb-highlight>
+                                        <ngb-highlight [result]="record[key.field]"
+                                        [term]="TestTableLayoutService.searchTerm"></ngb-highlight>
                                     </div>
                                 </li>
                                 <li class="d-flex row">
                                     <div class="col-6">
                                         <h6>Action</h6>
                                     </div>
-                                    <!-- <div class="col-6 my-auto table-action">
+                                    <div class="col-6 my-auto table-action">
                                         <a class="action-icon" *ngFor="let icon of action;"><i class="{{icon.icon}}"></i></a>
-                                    </div> -->
+                                    </div>
                                 </li>
                             </ul>
                         </td>
                     </div>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </div>

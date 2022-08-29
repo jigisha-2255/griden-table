@@ -1,9 +1,9 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Wallet } from '../model/Wallet.model';
-import { NgbdSortableTableTestWallet2, SortTableEvent } from '../test-wallet2/sortable-test-wallet2.directive';
-import { TestTableLayoutService } from '../test-wallet2/test-table-layout.service';
+import { Shared } from '../model/shared.model';
+import { NgbdSortableTestTableLayout, SortTestTableEvent } from './sortable-test-table-layout.directive';
+import { TestTableLayoutService } from './test-table-layout.service';
 
 @Component({
   selector: 'app-test-table-layout',
@@ -13,31 +13,40 @@ import { TestTableLayoutService } from '../test-wallet2/test-table-layout.servic
 })
 export class TestTableLayoutComponent implements OnInit {
   @Input() columnList:any;
+  @Input() columnListMob:any;
   @Input() childList:any;
+  @Input() childListMob:any;
   @Input() gridData:any;
   @Input() display!:string;
-  data$: Observable<Wallet[]>;
+  gridData2$:Observable<Shared[]>;
+  data$: Observable<Shared[]>;
   total$: Observable<number>;
   active = 1;
   pages: any = [5, 10, 20, 50, 100,200];
   checked: boolean = false;
   public isCollapsed: boolean[] = [];
-  @ViewChildren(NgbdSortableTableTestWallet2)
-  headers!: QueryList<NgbdSortableTableTestWallet2>;
+  @ViewChildren(NgbdSortableTestTableLayout)
+  headers!: QueryList<NgbdSortableTestTableLayout>;
 
   constructor(public TestTableLayoutService:TestTableLayoutService) {
+    this.gridData2$ = TestTableLayoutService.gridData2$;
     this.data$ = TestTableLayoutService.data$;
     this.total$ = TestTableLayoutService.total$;
   }
 
   ngOnInit(): void {
-      
+    // this.getResponse();
   }
-  onSort({ column , direction }: SortTableEvent) {
+
+  getResponse(){
+    // this.TestTableLayoutService.Wallet();
+  }
+
+  onSort({ column , direction }: SortTestTableEvent) {
     console.log('onsort called');
     // resetting other headers
     this.headers.forEach((header) => {
-      if (header.walletSortable !== column) {
+      if (header.sortTestTable !== column) {
         header.direction = '';
       }
     });

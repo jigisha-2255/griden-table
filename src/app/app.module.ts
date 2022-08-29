@@ -17,7 +17,7 @@ import { TestTableLayoutComponent } from './test-table-layout/test-table-layout.
 import { TestWallet2Component } from './test-wallet2/test-wallet2.component';
 import { NgbdSortableTableTestWallet2 } from './test-wallet2/sortable-test-wallet2.directive';
 import { TestUsers2Component } from './test-users2/test-users2.component';
-
+import { NgbdSortableTestTableLayout } from './test-table-layout/sortable-test-table-layout.directive';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,8 @@ import { TestUsers2Component } from './test-users2/test-users2.component';
     TestComponent,
     TestTableLayoutComponent,
     TestWallet2Component,
-    TestUsers2Component
+    TestUsers2Component,
+    NgbdSortableTestTableLayout
   ],
   imports: [
     BrowserModule,

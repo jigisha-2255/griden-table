@@ -1,9 +1,10 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
+import { Shared, SharedResponse } from '../model/shared.model';
 import { Wallet, WalletResponse } from '../model/Wallet.model';
 import { TableColumnMapping } from '../sharedEnum';
-import { TestTableLayoutService } from './test-table-layout.service';
+import { TestTableLayoutService } from '../test-table-layout/test-table-layout.service';
 
 @Component({
   selector: 'app-test-wallet2',
@@ -13,8 +14,10 @@ import { TestTableLayoutService } from './test-table-layout.service';
 })
 export class TestWallet2Component implements OnInit {
   columnList: any[] = [];
+  columnListMob:any[]=[];
   childList:any[]=[];
-  gridData: Wallet[] = [];
+  childListMob:any[]=[];
+  gridData: Shared[] = [];
   total!: number;
   display = 'Transaction';
 
@@ -38,8 +41,15 @@ export class TestWallet2Component implements OnInit {
         transaction_datetime: '',
         transaction_status: '',
       },
+      {
+        checked: '',
+        status: '',
+        first_name: '',
+      }
     ];
     const childData=[
+      {
+      },
       {
         wallet_id: '',
         type: '',
@@ -50,10 +60,18 @@ export class TestWallet2Component implements OnInit {
       }
     ];
 
-    const propertyList = Object.keys(data[0]);
-    const childList = Object.keys(childData[0])
+    const propertyList = {
+      desktop:Object.keys(data[0]),
+      mobile:Object.keys(data[1])
+    }
+    const childList={
+      desktop:Object.keys(childData[0]),
+      mobile:Object.keys(childData[1])
+    }
+    // const propertyList=Object.keys(data[0]);
+    // const childList = Object.keys(childData[0])
 
-    propertyList.forEach((element: string) => {
+    propertyList.desktop.forEach((element: string) => {
       if (element in TableColumnMapping) {
         this.columnList.push({
           field: element,
@@ -62,9 +80,27 @@ export class TestWallet2Component implements OnInit {
         });
       }
     });
-    childList.forEach((element: string) => {
+    propertyList.mobile.forEach((element: string) => {
+      if (element in TableColumnMapping) {
+        this.columnListMob.push({
+          field: element,
+          title: TableColumnMapping[element as keyof typeof TableColumnMapping],
+          width: '20%',
+        });
+      }
+    });
+    childList.desktop.forEach((element: string) => {
       if (element in TableColumnMapping) {
         this.childList.push({
+          field: element,
+          title: TableColumnMapping[element as keyof typeof TableColumnMapping],
+          width: '20%',
+        });
+      }
+    });
+    childList.mobile.forEach((element: string) => {
+      if (element in TableColumnMapping) {
+        this.childListMob.push({
           field: element,
           title: TableColumnMapping[element as keyof typeof TableColumnMapping],
           width: '20%',
@@ -74,19 +110,20 @@ export class TestWallet2Component implements OnInit {
   }
 
   loadGrid() {
-    // this.layoutService.wallet();
-    this.service.get<WalletResponse>('wallet/transaction').subscribe({
-      next: (res) => {
-        this.gridData = res.result;
-        this.total = res.result.length;
-        console.log('Get Data', this.gridData);
-        console.log(res.result.length);
-        this.layoutService.initWalletTable();
-      },
-      error: (err) => {
-        console.log(err.message);
-        alert('Error');
-      },
-    });
+    let url='wallet/transaction';
+    this.layoutService.getData(url);
+    // this.service.get<SharedResponse>('wallet/transaction').subscribe({
+    //   next: (res) => {
+    //     this.gridData = res.result;
+    //     this.total = res.result.length;
+    //     console.log('Get Data', this.gridData);
+    //     console.log(res.result.length);
+    //     this.layoutService.initWalletTable();
+    //   },
+    //   error: (err) => {
+    //     console.log(err.message);
+    //     alert('Error');
+    //   },
+    // });
   }
 }

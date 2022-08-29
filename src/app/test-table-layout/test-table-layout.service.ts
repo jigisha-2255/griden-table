@@ -3,9 +3,9 @@ import { Injectable, PipeTransform } from "@angular/core";
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { HttpService } from '../http.service';
 import { tap,debounceTime,switchMap,delay } from 'rxjs';
-import { SearchResult, State, Wallet, WalletResponse } from "../model/Wallet.model";
-import { SortTableColumn, SortTableDirection } from "./sortable-test-wallet2.directive";
-
+import { SearchResult, Shared, SharedResponse, State } from "../model/shared.model";
+import { SortTableColumn, SortTableDirection } from "./sortable-test-table-layout.directive";
+import { Wallet } from "../model/Wallet.model";
 
 const compare = (
   v1: string | number | boolean | object,
@@ -13,10 +13,10 @@ const compare = (
 ) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
 function sort(
-  data: Wallet[],
+  data: Shared[],
   column: SortTableColumn,
   direction: string
-): Wallet[] {
+): Shared[] {
   if (direction === '' || column === '') {
     return data;
   } else {
@@ -27,8 +27,12 @@ function sort(
   }
 }
 
-function matches(data: Wallet , term: string, pipe: PipeTransform) {
+function matches(data: Shared , term: string, pipe: PipeTransform) {
   return (
+    data.id.toString().includes(term) ||
+    // data.email.toString().includes(term) ||
+    data.contact_number.toString().includes(term) ||
+    data.user_type.toLowerCase().includes(term.toLowerCase()) ||
     data.wallet_id.toString().includes(term) ||
     data.amount.toString().includes(term) ||
     data.updated_balance.toString().includes(term) ||
@@ -39,11 +43,11 @@ function matches(data: Wallet , term: string, pipe: PipeTransform) {
   providedIn: 'root'
 })
 export class TestTableLayoutService {
-  gridData: Array<Wallet> = [];
-  // _gridData$ = new BehaviorSubject<Wallet[]>([]);
+  gridData: Array<Shared> = [];
+  _gridData2$ = new BehaviorSubject<Shared[]>([]);
   _loading$ = new BehaviorSubject<boolean>(true);
   _search$ = new Subject<void>();
-  _data$ = new BehaviorSubject<Wallet[]>([]);
+  _data$ = new BehaviorSubject<Shared[]>([]);
   _total$ = new BehaviorSubject<number>(0);
 
   _state: State = {
@@ -57,27 +61,32 @@ export class TestTableLayoutService {
   // Get API integration
 
   constructor(public httpService: HttpService, public pipe: DecimalPipe) {
-    // this.httpService
-    //       .get<WalletResponse>('wallet/transaction')
-    //       .subscribe({
-    //         next: (res) => {
-    //           this.gridData = res.result;
-    //           console.log('Get Data', this.gridData);
-    //           this.initWalletTable();
-    //         },
-    //         error: (err) => {
-    //           console.log(err.message);
-    //           alert('Error');
-    //         },
-    //       });
-    // console.log("from service",this.gridData);
-    // this.initWalletTable();
   }
 
-  wallet() {
+  // Wallet(){
+  //   try {
+  //     this.httpService
+  //       .get<SharedResponse>('wallet/transaction')
+  //       .subscribe({
+  //         next: (res) => {
+  //           this.gridData = res.result;
+  //           console.log('Get Data', this.gridData);
+  //           this.initWalletTable();
+  //         },
+  //         error: (err) => {
+  //           console.log(err.message);
+  //           alert('Error');
+  //         },
+  //       });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
+  
+  getData(url: string) {
     try {
       this.httpService
-        .get<WalletResponse>('wallet/transaction')
+        .get<SharedResponse>(url)
         .subscribe({
           next: (res) => {
             this.gridData = res.result;
@@ -95,6 +104,7 @@ export class TestTableLayoutService {
   }
 
   initWalletTable(){
+    console.log('init table');
     this._search$
       .pipe(
         tap(() => this._loading$.next(true)),
@@ -104,16 +114,16 @@ export class TestTableLayoutService {
         tap(() => this._loading$.next(false))
       )
       .subscribe((result) => {
+        this._gridData2$.next(result.data);
         this._data$.next(result.data);
         this._total$.next(result.total);
       });
-
     this._search$.next();
   }
 
-  // get gridData$() {
-  //   return this._gridData$.asObservable();
-  // }
+  get gridData2$() {
+    return this._gridData2$.asObservable();
+  }
   get data$() {
     return this._data$.asObservable();
   }
@@ -142,7 +152,7 @@ export class TestTableLayoutService {
   set searchTerm(searchTerm: string) {
     this._set({ searchTerm });
   }
-  set SortTableColumn(SortTableColumn: SortTableColumn) {
+  set SortTableColumn(SortTableColumn:SortTableColumn) {
     this._set({ SortTableColumn });
   }
   set SortTableDirection(SortTableDirection: SortTableDirection) {
