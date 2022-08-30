@@ -1,18 +1,15 @@
 import { Directive, EventEmitter, Input, Output } from "@angular/core";
-import { Shared } from "../model/shared.model";
+import { Shared } from "src/app/model/shared.model";
+import { SortTestTableEvent } from "src/app/model/tableProperty.model";
 
 export type SortTableColumn = keyof Shared | '';
 export type SortTableDirection = 'asc' | 'desc' | '';
+
 const rotate: { [key: string]: SortTableDirection } = {
   asc: 'desc',
   desc: '',
   '': 'asc',
 };
-
-export interface SortTestTableEvent {
-  column: SortTableColumn;
-  direction: SortTableDirection;
-}
 
 @Directive({
   selector: 'th[sortTestTable]',

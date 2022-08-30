@@ -1,28 +1,34 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Shared } from '../model/shared.model';
-import { NgbdSortableTestTableLayout, SortTestTableEvent } from './sortable-test-table-layout.directive';
+import { Shared } from 'src/app/model/shared.model';
+import { icons, SortTestTableEvent, TableProperty } from 'src/app/model/tableProperty.model';
+import { NgbdSortableTestTableLayout } from './sortable-test-table-layout.directive';
 import { TestTableLayoutService } from './test-table-layout.service';
 
 @Component({
   selector: 'app-test-table-layout',
   templateUrl: './test-table-layout.component.html',
   styleUrls: ['./test-table-layout.component.scss'],
-  providers:[TestTableLayoutService,DecimalPipe]
 })
 export class TestTableLayoutComponent implements OnInit {
-  @Input() columnList:any;
-  @Input() columnListMob:any;
-  @Input() childList:any;
-  @Input() childListMob:any;
-  @Input() gridData:any;
+  @Input()
+  columnList!: TableProperty[];
+  @Input()
+  columnListMob!: TableProperty[];
+  @Input()
+  childList!: TableProperty[];
+  @Input()
+  childListMob!: TableProperty[];
+  // @Input()
+  // gridData!: Shared[];
   @Input() display!:string;
+  @Input() icons!:icons[];
   gridData2$:Observable<Shared[]>;
   data$: Observable<Shared[]>;
   total$: Observable<number>;
   active = 1;
-  pages: any = [5, 10, 20, 50, 100,200];
+  tableData : any[] = [];
+  pages = [5, 10, 20, 50, 100,200];
   checked: boolean = false;
   public isCollapsed: boolean[] = [];
   @ViewChildren(NgbdSortableTestTableLayout)
@@ -35,7 +41,13 @@ export class TestTableLayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getResponse();
+    this.TestTableLayoutService.gridData2$.subscribe((tableData) => {
+      console.log(tableData);
+      this.tableData  = tableData.map(record => ({...record, ...record.user}));
+    });
+    this.TestTableLayoutService._search$.subscribe((searchData) => {
+      console.log(searchData);
+    });
   }
 
   getResponse(){
@@ -58,12 +70,12 @@ export class TestTableLayoutComponent implements OnInit {
   // Select-Deselect All Checkbox
   selectedAll = false;
   selectAll() {
-    for (var i = 0; i < this.gridData.length; i++) {
-      this.gridData[i].checked = this.selectedAll;
+    for (var i = 0; i < this.tableData.length; i++) {
+      this.tableData[i].checked = this.selectedAll;
     }
   }
   checkIfAllSelected() {
-    this.selectedAll = this.gridData.every(function (item: { checked: boolean; }) {
+    this.selectedAll = this.tableData.every(function (item: { checked: boolean; }) {
       return item.checked == true;
     });
   }

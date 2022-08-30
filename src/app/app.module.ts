@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TableLayoutComponent } from './table-layout/table-layout.component';
@@ -13,18 +12,18 @@ import { UsersComponent } from './users/users.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { StyleCellDirective } from './table-layout/style-cell.directive';
 import { TestComponent } from './test/test.component';
-import { TestTableLayoutComponent } from './test-table-layout/test-table-layout.component';
-import { TestWallet2Component } from './test-wallet2/test-wallet2.component';
-import { NgbdSortableTableTestWallet2 } from './test-wallet2/sortable-test-wallet2.directive';
-import { TestUsers2Component } from './test-users2/test-users2.component';
-import { NgbdSortableTestTableLayout } from './test-table-layout/sortable-test-table-layout.directive';
+import { TestWallet2Component } from './dynamic-table/test-wallet2/test-wallet2.component';
+import { TestUsers2Component } from './dynamic-table/test-users2/test-users2.component';
+import { TestTableLayoutService } from './dynamic-table/test-table-layout/test-table-layout.service';
+import { NgbdSortableTestTableLayout } from './dynamic-table/test-table-layout/sortable-test-table-layout.directive';
+import { TestTableLayoutComponent } from './dynamic-table/test-table-layout/test-table-layout.component';
+import { DecimalPipe } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableLayoutComponent,
     NgbdSortableTableLayout,
-    NgbdSortableTableTestWallet2,
     UsersComponent,
     WalletComponent,
     StyleCellDirective,
@@ -42,7 +41,7 @@ import { NgbdSortableTestTableLayout } from './test-table-layout/sortable-test-t
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [{provide:HTTP_INTERCEPTORS,useClass:TokenInterceptorService,multi:true}],
+  providers: [{provide:HTTP_INTERCEPTORS,useClass:TokenInterceptorService,multi:true},TestTableLayoutService,DecimalPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

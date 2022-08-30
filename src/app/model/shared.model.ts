@@ -1,11 +1,11 @@
-import { SortTableColumn, SortTableDirection } from "../test-table-layout/sortable-test-table-layout.directive";
+import { SortTableColumn, SortTableDirection } from "../dynamic-table/test-table-layout/sortable-test-table-layout.directive";
 
 export interface Shared {
+    expand:'',
     id: '';
+    first_name:'';
     status:'',
-    first_name:'',
     contact_number:'',
-    email:'',
     user_type:'',
     action:'',
     checked: '',
@@ -16,6 +16,11 @@ export interface Shared {
     debit_or_credit: '',
     transaction_datetime: '',
     transaction_status: '',
+    user:{
+      first_name:'',
+      last_name:'',
+      email:''
+    }
 }
 export interface SharedResponse{
   result:Array<Shared>;

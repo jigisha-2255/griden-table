@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
-import { WalletResponse } from '../model/Wallet.model';
+// import { WalletResponse } from '../model/Wallet.model';
 
 @Component({
   selector: 'app-wallet',
@@ -54,20 +54,20 @@ export class WalletComponent implements OnInit {
 
   loadGrid() {
     try {
-      this.service
-        .get<WalletResponse>('wallet/transaction')
-        .subscribe({
-          next: (res) => {
-            this.gridData = res.result;
-            this.total=res.result.length;
-            console.log(this.total);
-            console.log('Get Data', this.gridData);
-          },
-          error: (err) => {
-            console.log(err.message);
-            alert('Error');
-          },
-        });
+      // this.service
+      //   .get<WalletResponse>('wallet/transaction')
+      //   .subscribe({
+      //     next: (res) => {
+      //       this.gridData = res.result;
+      //       this.total=res.result.length;
+      //       console.log(this.total);
+      //       console.log('Get Data', this.gridData);
+      //     },
+      //     error: (err) => {
+      //       console.log(err.message);
+      //       alert('Error');
+      //     },
+      //   });
     } catch (e) {
       console.log(e);
     }

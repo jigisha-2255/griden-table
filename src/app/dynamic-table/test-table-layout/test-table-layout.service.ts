@@ -1,11 +1,11 @@
 import { DecimalPipe } from "@angular/common";
 import { Injectable, PipeTransform } from "@angular/core";
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { HttpService } from '../http.service';
 import { tap,debounceTime,switchMap,delay } from 'rxjs';
-import { SearchResult, Shared, SharedResponse, State } from "../model/shared.model";
+import { HttpService } from "src/app/http.service";
+import { SearchResult, Shared, State } from "src/app/model/shared.model";
 import { SortTableColumn, SortTableDirection } from "./sortable-test-table-layout.directive";
-import { Wallet } from "../model/Wallet.model";
+
 
 const compare = (
   v1: string | number | boolean | object,
@@ -16,7 +16,7 @@ function sort(
   data: Shared[],
   column: SortTableColumn,
   direction: string
-): Shared[] {
+): Shared[]  {
   if (direction === '' || column === '') {
     return data;
   } else {
@@ -31,12 +31,16 @@ function matches(data: Shared , term: string, pipe: PipeTransform) {
   return (
     data.id.toString().includes(term) ||
     // data.email.toString().includes(term) ||
-    data.contact_number.toString().includes(term) ||
-    data.user_type.toLowerCase().includes(term.toLowerCase()) ||
+    data.user.first_name.toLowerCase().includes(term.toLowerCase()) ||
     data.wallet_id.toString().includes(term) ||
     data.amount.toString().includes(term) ||
-    data.updated_balance.toString().includes(term) ||
+    data.updated_balance.toString().includes(term) || 
     data.transaction_datetime.toString().includes(term) 
+    // data.first_name.toLowerCase().includes(term.toLowerCase()) ||
+    // data.contact_number.toString().includes(term) 
+    // data.user_type.toLowerCase().includes(term.toLowerCase()) 
+   
+  
   );
 }
 @Injectable({
@@ -63,48 +67,9 @@ export class TestTableLayoutService {
   constructor(public httpService: HttpService, public pipe: DecimalPipe) {
   }
 
-  // Wallet(){
-  //   try {
-  //     this.httpService
-  //       .get<SharedResponse>('wallet/transaction')
-  //       .subscribe({
-  //         next: (res) => {
-  //           this.gridData = res.result;
-  //           console.log('Get Data', this.gridData);
-  //           this.initWalletTable();
-  //         },
-  //         error: (err) => {
-  //           console.log(err.message);
-  //           alert('Error');
-  //         },
-  //       });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
-  
-  getData(url: string) {
-    try {
-      this.httpService
-        .get<SharedResponse>(url)
-        .subscribe({
-          next: (res) => {
-            this.gridData = res.result;
-            console.log('Get Data', this.gridData);
-            this.initWalletTable();
-          },
-          error: (err) => {
-            console.log(err.message);
-            alert('Error');
-          },
-        });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  initWalletTable(){
-    console.log('init table');
+  initWalletTable(sharedData: Shared[]){
+    this.gridData=sharedData;
+    console.log('gridData',this.gridData);
     this._search$
       .pipe(
         tap(() => this._loading$.next(true)),
@@ -115,6 +80,7 @@ export class TestTableLayoutService {
       )
       .subscribe((result) => {
         this._gridData2$.next(result.data);
+        // this._gridData2$.next(sharedData);
         this._data$.next(result.data);
         this._total$.next(result.total);
       });
@@ -167,7 +133,6 @@ export class TestTableLayoutService {
   _search(): Observable<SearchResult> {
     const { SortTableColumn, SortTableDirection, pageSize, page, searchTerm } =
       this._state;
-
     // 1. sort
     let data = sort(this.gridData, SortTableColumn, SortTableDirection);
 

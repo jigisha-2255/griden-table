@@ -1,4 +1,5 @@
 export enum TableColumnMapping{
+    expand="",
     first_name="User",
     user_type="User Type",
     contact_number="Phone",

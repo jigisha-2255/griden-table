@@ -17,11 +17,11 @@ export class TestComponent implements OnInit {
    ngOnInit(): void {
      const data=[
       {
-        first_name:"Jigisha",
+        first_name:"Piyu",
         user_type:'A'
       },
       {
-        first_name:"Sachin",
+        first_name:"Aarav",
         user_type:"B",
         contact_number:34239943294
       }

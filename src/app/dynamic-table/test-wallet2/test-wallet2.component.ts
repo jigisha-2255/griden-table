@@ -1,24 +1,22 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from '../http.service';
-import { Shared, SharedResponse } from '../model/shared.model';
-import { Wallet, WalletResponse } from '../model/Wallet.model';
-import { TableColumnMapping } from '../sharedEnum';
+import { TableProperty } from 'src/app/model/tableProperty.model';
+import { TableColumnMapping } from 'src/app/sharedEnum';
+import { HttpService } from '../../http.service';
+import { Shared, SharedResponse } from '../../model/shared.model';
 import { TestTableLayoutService } from '../test-table-layout/test-table-layout.service';
 
 @Component({
   selector: 'app-test-wallet2',
   templateUrl: './test-wallet2.component.html',
   styleUrls: ['./test-wallet2.component.scss'],
-  providers: [TestTableLayoutService, DecimalPipe],
 })
 export class TestWallet2Component implements OnInit {
-  columnList: any[] = [];
-  columnListMob:any[]=[];
-  childList:any[]=[];
-  childListMob:any[]=[];
+  columnList: TableProperty[] = [];
+  columnListMob:TableProperty[]=[];
+  childList:TableProperty[]=[];
+  childListMob:TableProperty[]=[];
   gridData: Shared[] = [];
-  total!: number;
+  total: number=0;
   display = 'Transaction';
 
   constructor(
@@ -68,8 +66,6 @@ export class TestWallet2Component implements OnInit {
       desktop:Object.keys(childData[0]),
       mobile:Object.keys(childData[1])
     }
-    // const propertyList=Object.keys(data[0]);
-    // const childList = Object.keys(childData[0])
 
     propertyList.desktop.forEach((element: string) => {
       if (element in TableColumnMapping) {
@@ -108,22 +104,31 @@ export class TestWallet2Component implements OnInit {
       }
     });
   }
-
+  icons=[
+    {
+      title:'Edit',
+      icon: 'mdi mdi-eye',
+      routerLink:''
+    },
+    {
+      title:'Delete',
+      icon:'mdi mdi-file-pdf',
+      routerLink:''
+    }
+  ]
   loadGrid() {
-    let url='wallet/transaction';
-    this.layoutService.getData(url);
-    // this.service.get<SharedResponse>('wallet/transaction').subscribe({
-    //   next: (res) => {
-    //     this.gridData = res.result;
-    //     this.total = res.result.length;
-    //     console.log('Get Data', this.gridData);
-    //     console.log(res.result.length);
-    //     this.layoutService.initWalletTable();
-    //   },
-    //   error: (err) => {
-    //     console.log(err.message);
-    //     alert('Error');
-    //   },
-    // });
+    this.service.get<SharedResponse>('wallet/transaction').subscribe({
+      next: (res) => {
+        this.gridData = res.result;
+        this.total = res.result.length;
+        console.log('Get Data', this.gridData);
+        console.log(res.result.length);
+        this.layoutService.initWalletTable(this.gridData);
+      },
+      error: (err) => {
+        console.log(err.message);
+        alert('Error');
+      },
+    });
   }
 }
