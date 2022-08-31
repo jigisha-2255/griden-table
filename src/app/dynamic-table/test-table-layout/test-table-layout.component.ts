@@ -19,8 +19,6 @@ export class TestTableLayoutComponent implements OnInit {
   childList!: TableProperty[];
   @Input()
   childListMob!: TableProperty[];
-  // @Input()
-  // gridData!: Shared[];
   @Input() display!:string;
   @Input() icons!:icons[];
   gridData2$:Observable<Shared[]>;
@@ -45,13 +43,6 @@ export class TestTableLayoutComponent implements OnInit {
       console.log(tableData);
       this.tableData  = tableData.map(record => ({...record, ...record.user}));
     });
-    this.TestTableLayoutService._search$.subscribe((searchData) => {
-      console.log(searchData);
-    });
-  }
-
-  getResponse(){
-    // this.TestTableLayoutService.Wallet();
   }
 
   onSort({ column , direction }: SortTestTableEvent) {

@@ -28,6 +28,7 @@ export class TestWallet2Component implements OnInit {
     this.loadGrid();
     const data = [
       {
+        expand:true,
         checked: '',
         status: '',
         first_name: '',
@@ -40,6 +41,7 @@ export class TestWallet2Component implements OnInit {
         transaction_status: '',
       },
       {
+        expand:true,
         checked: '',
         status: '',
         first_name: '',
@@ -116,6 +118,7 @@ export class TestWallet2Component implements OnInit {
       routerLink:''
     }
   ]
+  
   loadGrid() {
     this.service.get<SharedResponse>('wallet/transaction').subscribe({
       next: (res) => {

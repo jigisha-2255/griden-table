@@ -35,8 +35,8 @@ function matches(data: Shared , term: string, pipe: PipeTransform) {
     data.wallet_id.toString().includes(term) ||
     data.amount.toString().includes(term) ||
     data.updated_balance.toString().includes(term) || 
-    data.transaction_datetime.toString().includes(term) 
-    // data.first_name.toLowerCase().includes(term.toLowerCase()) ||
+    data.transaction_datetime.toString().includes(term)
+    // data.first_name.toLowerCase().includes(term.toLowerCase()) 
     // data.contact_number.toString().includes(term) 
     // data.user_type.toLowerCase().includes(term.toLowerCase()) 
    

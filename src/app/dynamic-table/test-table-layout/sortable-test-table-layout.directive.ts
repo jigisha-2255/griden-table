@@ -20,7 +20,7 @@ const rotate: { [key: string]: SortTableDirection } = {
   },
 })
 export class NgbdSortableTestTableLayout {
-  @Input() sortTestTable: SortTableColumn = '';
+  @Input() sortTestTable!: SortTableColumn;
   @Input() direction: SortTableDirection = '';
   @Output() sort = new EventEmitter<SortTestTableEvent>();
  

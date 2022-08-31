@@ -1,13 +1,13 @@
 import { SortTableColumn, SortTableDirection } from "../dynamic-table/test-table-layout/sortable-test-table-layout.directive";
 
 export interface Shared {
-    expand:'',
     id: '';
     first_name:'';
     status:'',
     contact_number:'',
     user_type:'',
     action:'',
+    expand:'',
     checked: '',
     wallet_id: '',
     type: '',

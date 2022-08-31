@@ -36,9 +36,10 @@ export class TestUsers2Component implements OnInit {
         action: this.icons,
       },
       {
+        expand:true,
         checked: '',
         status:'',
-        first_name:''
+        first_name:'',
       }
     ];
     const childData = [
