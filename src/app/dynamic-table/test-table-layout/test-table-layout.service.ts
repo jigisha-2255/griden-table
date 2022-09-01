@@ -1,5 +1,5 @@
 import { DecimalPipe } from "@angular/common";
-import { Injectable, PipeTransform } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { tap,debounceTime,switchMap,delay } from 'rxjs';
 import { HttpService } from "src/app/http.service";
@@ -27,20 +27,19 @@ function sort(
   }
 }
 
-function matches(data: Shared , term: string, pipe: PipeTransform) {
+function matches(data: Shared , term: string) {
   return (
-    data.id.toString().includes(term) ||
-    // data.email.toString().includes(term) ||
-    data.user.first_name.toLowerCase().includes(term.toLowerCase()) ||
-    data.wallet_id.toString().includes(term) ||
-    data.amount.toString().includes(term) ||
-    data.updated_balance.toString().includes(term) || 
-    data.transaction_datetime.toString().includes(term)
-    // data.first_name.toLowerCase().includes(term.toLowerCase()) 
-    // data.contact_number.toString().includes(term) 
-    // data.user_type.toLowerCase().includes(term.toLowerCase()) 
-   
-  
+    data.id?.toString().includes(term) ||
+    data.user?.first_name.toLowerCase().includes(term.toLowerCase()) ||
+    data.wallet_id?.toLowerCase().includes(term.toLowerCase()) ||
+    // data.type?.toString().includes(term) ||
+    data.amount?.toString().includes(term) ||
+    data.updated_balance?.toString().includes(term) ||
+    data.transaction_datetime?.toString().includes(term)  ||
+    data.first_name?.toLowerCase().includes(term.toLowerCase()) ||
+    data.contact_number?.toString().includes(term) ||
+    data.email?.includes(term) ||
+    data.user_type?.toLowerCase().includes(term.toLowerCase()) 
   );
 }
 @Injectable({
@@ -137,8 +136,9 @@ export class TestTableLayoutService {
     let data = sort(this.gridData, SortTableColumn, SortTableDirection);
 
     // 2. filter
-    data = data.filter((user) => matches(user, searchTerm, this.pipe));
+    data = data.filter((tableData) => matches(tableData, searchTerm));
     const total = data.length;
+    console.log(total);
 
     // 3. paginate
     data = data.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);

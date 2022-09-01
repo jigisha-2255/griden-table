@@ -1,5 +1,5 @@
 export enum TableColumnMapping{
-    first_name="User",
+    first_name="Users",
     user_type="User Type",
     contact_number="Phone",
     email="Email",
@@ -12,5 +12,6 @@ export enum TableColumnMapping{
     status="",
     transaction_status="Status",
     action="Action",
-    expand="Expand"
+    expand="",
+    checked="",
   }

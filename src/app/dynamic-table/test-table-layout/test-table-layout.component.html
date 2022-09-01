@@ -15,8 +15,8 @@
         <div class="d-flex justify-content-center justify-content-lg-end">
             <label for="table-complete-search" class="col-form-label search-label mx-2">Search:</label>
             <div class="">
-                <input id="table-complete-search" type="text" class="form-control form-control-sm"
-                name="searchTerm" [(ngModel)]="TestTableLayoutService.searchTerm">
+                <input id="table-complete-search" type="text" class="form-control form-control-sm" name="searchTerm"
+                    [(ngModel)]="TestTableLayoutService.searchTerm">
             </div>
         </div>
     </div>
@@ -25,85 +25,112 @@
             <thead>
                 <tr>
                     <div class="d-lg-flex flex-lg-row">
-                        <th style="width:5%;">
+                        <th>
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="customCheck1"
-                                    name="all" [(ngModel)]="selectedAll" (change)="selectAll();" />
+                                <input type="checkbox" class="form-check-input" id="customCheck1" name="all"
+                                    [(ngModel)]="selectedAll" (change)="selectAll();" />
                                 <label class="form-check-label" for="customCheck1">&nbsp;</label>
                             </div>
                         </th>
-                        <th scope="col" *ngFor="let enum of columnList; let i = index" width={{enum.width}} sortTestTable="updated_balance" (sort)="onSort($event)" class="d-none d-lg-block">
-                            {{enum.title}}
+                        <th scope="col" *ngFor="let enum of columnList; let i = index" width={{enum.width}}
+                            sortTestTable="updated_balance" (sort)="onSort($event)" class="d-none d-lg-block">
                             <div *ngIf="enum.title=='Expand'">
-                            </div>
+                            </div> 
+                            {{enum.title}}
                         </th>
-                        <th scope="col" *ngFor="let enum of columnListMob; let i = index" width={{enum.width}} sortTestTable="updated_balance" (sort)="onSort($event)" class="d-lg-none">
+                        <th scope="col" *ngFor="let enum of columnListMob; let i = index" width={{enum.width}}
+                            sortTestTable="updated_balance" (sort)="onSort($event)" class="d-lg-none">
                             {{enum.title}}
                         </th>
                     </div>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let record of tableData; let i = index"> 
+                <tr *ngFor="let record of tableData; let i = index">
                     <div class="d-lg-flex flex-lg-row parentList">
-                        <td style="width:5%;">
+                        <!-- <td>
                             <div class="d-flex align-items-center">
-                                <!-- <div>
+                                <div>
                                     <button type="button" class="btn btn-collapse me-2"
                                     (click)="isCollapsed[i] = !isCollapsed[i]" [attr.aria-expanded]="!isCollapsed"
                                     aria-controls="collapse">
                                     <i
                                         [ngClass]="isCollapsed[i]==true?'uil-minus-circle text-danger':'uil-plus-circle text-success'"></i>
                                 </button>
-                                </div> -->
-                                
+                                </div>
+                            </div>
+                        </td> -->
+                        <td class="my-auto" *ngFor="let key of columnList; let j = index" class="d-none d-lg-block"
+                            width="{{key.width}}">
+                            <div *ngIf="key.field=='expand'">
+                                <button type="button" class="btn btn-collapse me-2"
+                                    (click)="isCollapsed[i] = !isCollapsed[i]" [attr.aria-expanded]="!isCollapsed"
+                                    aria-controls="collapse">
+                                    <i
+                                        [ngClass]="isCollapsed[i]==true?'uil-minus-circle text-danger':'uil-plus-circle text-success'"></i>
+                                </button>
+                            </div>
+                            <div *ngIf="key.field=='checked'">
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" name="all"
                                         [(ngModel)]="record.checked" (change)="checkIfAllSelected();">
                                     <label class="form-check-label" for="customCheck1">&nbsp;</label>
                                 </div>
                             </div>
-                        </td>
-                        <td>
-                        <td class="my-auto" *ngFor="let key of columnList; let i = index" width="{{key.width}}" class="d-none d-lg-block">          
-                            <div *ngIf="key.title=='Expand'">
-                                <button type="button" class="btn btn-collapse me-2"
-                                (click)="isCollapsed[i] = !isCollapsed[i]" [attr.aria-expanded]="!isCollapsed"
-                                aria-controls="collapse">
-                                <i
-                                    [ngClass]="isCollapsed[i]==true?'uil-minus-circle text-danger':'uil-plus-circle text-success'"></i>
-                            </button>
+                            <div *ngIf="(key.field!='checked' && key.field!='expand')">
+                                <ngb-highlight result="{{record[key.field]}}" [term]="TestTableLayoutService.searchTerm"
+                                    [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight>
                             </div>
-                            <ngb-highlight result="{{record[key.field]}}" [term]="TestTableLayoutService.searchTerm" appStyleCell="record[key.field]" [field]="key.field"></ngb-highlight>
-                        </td>
-                        <td class="my-auto" *ngFor="let key of columnListMob; let i = index" width="{{key.width}}" class="d-lg-none">                         
-                            <ngb-highlight result="{{record[key.field]}}" [term]="TestTableLayoutService.searchTerm" appStyleCell="record[key.field]" [field]="key.field"></ngb-highlight>
-                        </td>
-                        <td>
-                            <div class="col-6 my-auto table-action d-flex">
+                            <div class="col-6 my-auto table-action d-flex" *ngIf="key.field=='action'">
                                 <a class="action-icon" *ngFor="let icon of icons;"><i class="{{icon.icon}}"></i></a>
+                            </div>
+                        </td>
+                        <td class="my-auto" *ngFor="let key of columnListMob; let j = index" width="{{key.width}}"
+                            class="d-lg-none">
+                            <div *ngIf="key.field=='expand'">
+                                <button type="button" class="btn btn-collapse me-2"
+                                    (click)="isCollapsed[i] = !isCollapsed[i]" [attr.aria-expanded]="!isCollapsed"
+                                    aria-controls="collapse">
+                                    <i
+                                        [ngClass]="isCollapsed[i]==true?'uil-minus-circle text-danger':'uil-plus-circle text-success'"></i>
+                                </button>
+                            </div>
+                            <div *ngIf="key.field=='checked'">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="all"
+                                        [(ngModel)]="record.checked" (change)="checkIfAllSelected();">
+                                    <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                </div>
+                            </div>
+                            <div *ngIf="(key.field!='checked' && key.field!='expand')">
+                                <ngb-highlight result="{{record[key.field]}}" [term]="TestTableLayoutService.searchTerm"
+                                    [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight>
                             </div>
                         </td>
                     </div>
                     <div class="childList">
-                        <td  #collapse="ngbCollapse" [(ngbCollapse)]="!isCollapsed[i]" colspan="4">
+                        <td #collapse="ngbCollapse" [(ngbCollapse)]="!isCollapsed[i]" colspan="4">
                             <ul class="d-none d-lg-block">
                                 <li class="d-flex row" *ngFor="let key of childList; let i = index">
                                     <div class="col-6">
                                         <h6>{{key.title}}</h6>
                                     </div>
                                     <div class="col-6 my-auto table-action d-flex">
-                                        <ngb-highlight result="{{record[key.field]}}" [term]="TestTableLayoutService.searchTerm" appStyleCell="record[key.field]" [field]="key.field"></ngb-highlight>
+                                        <ngb-highlight result="{{record[key.field]}}"
+                                            [term]="TestTableLayoutService.searchTerm"
+                                            [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight>
                                     </div>
                                 </li>
                             </ul>
-                            <ul class="d-lg-none"> 
+                            <ul class="d-lg-none">
                                 <li class="d-flex row" *ngFor="let key of childListMob; let i = index">
                                     <div class="col-6">
                                         <h6>{{key.title}}</h6>
                                     </div>
                                     <div class="col-6 my-auto table-action d-flex">
-                                        <ngb-highlight result="{{record[key.field]}}" [term]="TestTableLayoutService.searchTerm" appStyleCell="record[key.field]" [field]="key.field"></ngb-highlight>
+                                        <ngb-highlight result="{{record[key.field]}}"
+                                            [term]="TestTableLayoutService.searchTerm"
+                                            [appStyleCell]="record[key.field]" [field]="key.field"></ngb-highlight>
                                     </div>
                                 </li>
                             </ul>
@@ -113,17 +140,22 @@
                                         <h6>Action</h6>
                                     </div>
                                     <div class="col-6 my-auto table-action d-flex">
-                                        <a class="action-icon" *ngFor="let icon of icons;"><i class="{{icon.icon}}"></i></a>
+                                        <a class="action-icon" *ngFor="let icon of icons;"><i
+                                                class="{{icon.icon}}"></i></a>
                                     </div>
                                 </li>
                             </ul>
                         </td>
                     </div>
-                 </tr>
+                </tr>
+                <tr>
+                    <td *ngIf="(TestTableLayoutService.total$ | async) == 0"
+                        class="text-center">No matching records found</td>
+                </tr>
             </tbody>
         </table>
     </div>
-   
+
     <div class="d-lg-flex justify-content-lg-between">
         <div class="text-center">
             <p>Showing Transaction {{TestTableLayoutService.pageSize}} of {{(TestTableLayoutService.total$ |

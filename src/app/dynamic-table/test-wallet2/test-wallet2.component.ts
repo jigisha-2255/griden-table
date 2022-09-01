@@ -31,7 +31,10 @@ export class TestWallet2Component implements OnInit {
         expand:true,
         checked: '',
         status: '',
-        first_name: '',
+        first_name:'',
+        // user:{
+        //   first_name:''
+        // },
         wallet_id: '',
         type: '',
         amount: '',

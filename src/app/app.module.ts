@@ -18,6 +18,7 @@ import { TestTableLayoutService } from './dynamic-table/test-table-layout/test-t
 import { NgbdSortableTestTableLayout } from './dynamic-table/test-table-layout/sortable-test-table-layout.directive';
 import { TestTableLayoutComponent } from './dynamic-table/test-table-layout/test-table-layout.component';
 import { DecimalPipe } from '@angular/common';
+import { StyleCellTestTableDirective } from './dynamic-table/test-table-layout/style-cell-test-table.directive';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { DecimalPipe } from '@angular/common';
     TestTableLayoutComponent,
     TestWallet2Component,
     TestUsers2Component,
-    NgbdSortableTestTableLayout
+    NgbdSortableTestTableLayout,
+    StyleCellTestTableDirective,
   ],
   imports: [
     BrowserModule,

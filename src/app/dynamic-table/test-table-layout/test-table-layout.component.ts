@@ -40,13 +40,14 @@ export class TestTableLayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.TestTableLayoutService.gridData2$.subscribe((tableData) => {
-      console.log(tableData);
+      // console.log(tableData);
       this.tableData  = tableData.map(record => ({...record, ...record.user}));
+      // this.tableData  = tableData.map(record => ({...record}));
     });
   }
 
   onSort({ column , direction }: SortTestTableEvent) {
-    console.log('onsort called');
+    // console.log('onsort called');
     // resetting other headers
     this.headers.forEach((header) => {
       if (header.sortTestTable !== column) {

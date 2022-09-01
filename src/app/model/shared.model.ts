@@ -3,6 +3,8 @@ import { SortTableColumn, SortTableDirection } from "../dynamic-table/test-table
 export interface Shared {
     id: '';
     first_name:'';
+    last_name:'',
+    email:'',
     status:'',
     contact_number:'',
     user_type:'',
