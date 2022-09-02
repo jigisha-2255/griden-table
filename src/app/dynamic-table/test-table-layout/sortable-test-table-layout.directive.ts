@@ -2,7 +2,7 @@ import { Directive, EventEmitter, Input, Output } from "@angular/core";
 import { Shared } from "src/app/model/shared.model";
 import { SortTestTableEvent } from "src/app/model/tableProperty.model";
 
-export type SortTableColumn = keyof Shared | '';
+export type SortTableColumn = keyof Shared | '' | string;
 export type SortTableDirection = 'asc' | 'desc' | '';
 
 const rotate: { [key: string]: SortTableDirection } = {

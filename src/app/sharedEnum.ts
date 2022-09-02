@@ -14,4 +14,4 @@ export enum TableColumnMapping{
     action="Action",
     expand="",
     checked="",
-  }
+  } 

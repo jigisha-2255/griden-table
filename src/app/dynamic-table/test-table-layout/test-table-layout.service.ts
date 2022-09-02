@@ -29,10 +29,10 @@ function sort(
 
 function matches(data: Shared , term: string) {
   return (
-    data.id?.toString().includes(term) ||
-    data.user?.first_name.toLowerCase().includes(term.toLowerCase()) ||
+    data['id']?.toString().includes(term) ||
+    // data.user?.first_name.toLowerCase().includes(term.toLowerCase()) ||
     data.wallet_id?.toLowerCase().includes(term.toLowerCase()) ||
-    // data.type?.toString().includes(term) ||
+    data.type?.toString().includes(term) ||
     data.amount?.toString().includes(term) ||
     data.updated_balance?.toString().includes(term) ||
     data.transaction_datetime?.toString().includes(term)  ||

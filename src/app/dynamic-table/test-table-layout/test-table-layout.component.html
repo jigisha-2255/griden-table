@@ -25,7 +25,7 @@
             <thead>
                 <tr>
                     <div class="d-lg-flex flex-lg-row">
-                        <th>
+                        <th scope="col">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="customCheck1" name="all"
                                     [(ngModel)]="selectedAll" (change)="selectAll();" />
@@ -33,13 +33,13 @@
                             </div>
                         </th>
                         <th scope="col" *ngFor="let enum of columnList; let i = index" width={{enum.width}}
-                            sortTestTable="updated_balance" (sort)="onSort($event)" class="d-none d-lg-block">
+                            sortTestTable={{enum.field}} (sort)="onSort($event)" class="d-none d-lg-block">
                             <div *ngIf="enum.title=='Expand'">
                             </div> 
                             {{enum.title}}
                         </th>
                         <th scope="col" *ngFor="let enum of columnListMob; let i = index" width={{enum.width}}
-                            sortTestTable="updated_balance" (sort)="onSort($event)" class="d-lg-none">
+                            sortTestTable="{{enum.field}}" (sort)="onSort($event)" class="d-lg-none">
                             {{enum.title}}
                         </th>
                     </div>
